@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'  // This assumes you have Maven 3.6.3 installed in Jenkins tool configuration
+        maven 'Maven'  // This assumes you have Maven installed in Jenkins tool configuration
     }
 
     stages {
@@ -27,25 +27,30 @@ pipeline {
                 sh "mvn test"  // Add space between sh and the command
             }
         }
+
         stage('Security Scan with Trivy') {
             steps {
-             sh 'trivy fs --format table --output trivy-report.txt --severity HIGH,CRITICAL .'
+                echo 'Running security scan with Trivy'
+                sh 'trivy fs --format table --output trivy-report.txt --severity HIGH,CRITICAL .'
             }
         }
-         stage('Sonar Analysis') {
+
+        stage('Sonar Analysis') {
             environment {
-                 SCANNER_HOME = tool 'Sonar-scanner'
+                SCANNER_HOME = tool 'Sonar-scanner'  // Ensure 'Sonar-scanner' tool is properly configured in Jenkins
             }
             steps {
-                withSonarQubeEnv('sonarserver')
-                sh '''
-                $SCANNER_HOME/bin/sonar-scanner \
-                -Dsonar.organization=technicalkonica \
-                -Dsonar.projectName=Springbootpet \
-                -Dsonar.projectKEY=technicalkonica_springbootpet \
-                -Dsonar.java.binaries=. \
-                -Dsonar.exclusions=**/trivy-report.txt
-                '''
+                withSonarQubeEnv('sonar') {  // Ensure 'sonarserver' is configured in Jenkins
+                    sh '''
+                    $SCANNER_HOME/bin/sonar-scanner \
+                    -Dsonar.organization=technicalkonica \
+                    -Dsonar.projectName=Springbootpet \
+                    -Dsonar.projectKey=technicalkonica_springbootpet \
+                    -Dsonar.java.binaries=target/classes \
+                    -Dsonar.exclusions=**/trivy-report.txt
+                    '''
+                }
             }
         }
-}
+    }  // Close stages block
+}  // Close pipeline block
