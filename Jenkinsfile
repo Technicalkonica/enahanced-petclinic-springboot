@@ -36,19 +36,21 @@ pipeline {
         }
 
         stage('Sonar Analysis') {
-    environment {
-        SCANNER_HOME = tool 'Sonar-scanner'
-    }
-    steps {
-        withSonarQubeEnv('sonarserver') {
-            sh '''
-            /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/Sonar-scanner/bin/sonar-scanner \
-            -Dsonar.organization=technicalkonica \
-            -Dsonar.projectName=Springbootpet \
-            -Dsonar.projectKey=technicalkonica_springbootpet \
-            -Dsonar.java.binaries=target/classes \
-            -Dsonar.exclusions=**/trivy-report.txt
-            '''
+            environment {
+                SCANNER_HOME = tool 'Sonar-scanner'
+            }
+            steps {
+                withSonarQubeEnv('sonarserver') {
+                    sh '''
+                    /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/Sonar-scanner/bin/sonar-scanner \
+                    -Dsonar.organization=technicalkonica \
+                    -Dsonar.projectName=Springbootpet \
+                    -Dsonar.projectKey=technicalkonica_springbootpet \
+                    -Dsonar.java.binaries=target/classes \
+                    -Dsonar.exclusions=**/trivy-report.txt
+                    '''
+                }
+            }
         }
-    }
-}
+    } // End of stages
+} // End of pipeline
