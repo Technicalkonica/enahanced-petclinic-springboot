@@ -22,7 +22,7 @@ pipeline {
         stage('Maven Test') {
             steps {
                 echo 'This is Maven Test Stage'
-                sh "mvn tst"
+                sh "mvn test"
       
             }
         }
