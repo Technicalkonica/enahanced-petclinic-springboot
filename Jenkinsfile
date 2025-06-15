@@ -1,9 +1,13 @@
-
 pipeline {
     agent any
 
     tools {
         maven 'Maven'  // This assumes you have Maven installed in Jenkins tool configuration
+    }
+
+    environment {
+        IMAGE_NAME = 'your-image-name'  // Define the image name
+        IMAGE_TAG = 'latest'  // Define the image tag (or set it dynamically)
     }
 
     stages {
@@ -60,6 +64,22 @@ pipeline {
                     timeout(time: 1, unit: 'HOURS') {  // This timeout is now inside the 'steps' block
                         waitForQualityGate abortPipeline: true
                     }
+                }
+            }
+        }
+
+        stage('Maven Package') {
+            steps {
+                echo 'This is Maven package'
+                sh "mvn package"  // Corrected command from 'mvn packaged' to 'mvn package'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                script {
+                    echo 'This is Docker Build start'
+                    docker.build("$IMAGE_NAME:$IMAGE_TAG")  // Using variables for image name and tag
                 }
             }
         }
