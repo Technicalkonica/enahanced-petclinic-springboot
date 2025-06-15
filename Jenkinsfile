@@ -32,5 +32,20 @@ pipeline {
              sh 'trivy fs --format table --output trivy-report.txt --severity HIGH,CRITICAL .'
             }
         }
-    } 
+         stage('Sonar Analysis') {
+            environment {
+                 SCANNER_HOME = tool 'Sonar-scanner'
+            }
+            steps {
+                withSonarQubeEnv('sonarserver')
+                sh '''
+                $SCANNER_HOME/bin/sonar-scanner \
+                -Dsonar.organization=technicalkonica \
+                -Dsonar.projectName=Springbootpet \
+                -Dsonar.projectKEY=technicalkonica_springbootpet \
+                -Dsonar.java.binaries=. \
+                -Dsonar.exclusions=**/trivy-report.txt
+                '''
+            }
+        }
 }
