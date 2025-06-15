@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout from git') {
             steps {
-                git branch: 'prod', url: 'https://github.com/Technicalkonica/enahanced-petclinc-springboot.git'
+                git branch: 'main', url: 'https://github.com/Technicalkonica/enahanced-petclinc-springboot.git'
             }
         }
 
