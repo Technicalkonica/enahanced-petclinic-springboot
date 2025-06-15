@@ -8,6 +8,8 @@ pipeline {
     environment {
         IMAGE_NAME = 'your-image-name'  // Define the image name
         IMAGE_TAG = 'latest'  // Define the image tag (or set it dynamically)
+        TENANT_ID = "79e070eb-19f3-4ea9-840b-5be5ac643d55"  // Replace with your actual Tenant ID
+        ACR_REGISTRY_NAME = "Bootcamp"  // Replace with your actual ACR registry name
     }
 
     stages {
@@ -73,5 +75,19 @@ pipeline {
                 }
             }
         }
-    } // End of stages
-} // End of pipeline
+
+        stage('Azure Login to ACR') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'azurespn', usernameVariable: 'ACR_USERNAME', passwordVariable: 'ACR_PASSWORD')]) {
+                    script {
+                        // Log in to Azure CLI
+                        sh 'az login --service-principal -u $ACR_USERNAME -p $ACR_PASSWORD --tenant $TENANT_ID'
+                        
+                        // Log in to ACR (Azure Container Registry)
+                        sh 'az acr login --name $ACR_REGISTRY_NAME'
+                    }
+                }
+            }
+        }
+    }
+}
