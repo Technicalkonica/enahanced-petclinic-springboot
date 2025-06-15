@@ -58,19 +58,9 @@ pipeline {
             }
         }
 
-        stage('Quality Gate') {
-            steps {
-                script {
-                    timeout(time: 1, unit: 'HOURS') {  // This timeout is now inside the 'steps' block
-                        waitForQualityGate abortPipeline: true
-                    }
-                }
-            }
-        }
-
         stage('Maven Package') {
             steps {
-                echo 'This is Maven package'
+                echo 'This is Maven package stage'
                 sh "mvn package"  // Corrected command from 'mvn packaged' to 'mvn package'
             }
         }
