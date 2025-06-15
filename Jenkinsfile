@@ -27,5 +27,10 @@ pipeline {
                 sh "mvn test"  // Add space between sh and the command
             }
         }
-    }
+        stage('Security Scan with Trivy') {
+            steps {
+             sh 'trivy fs --format table --output trivy-report.txt --severity HIGH,CRITICAL .'
+            }
+        }
+    } 
 }
