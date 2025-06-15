@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Checkout from git') {
             steps {
-                git branch: 'main', url: 'https://github.com/Technicalkonica/enahanced-petclinc-springboot.git'
+                git branch: 'main',
+                    url: 'https://github.com/Technicalkonica/enahanced-petclinc-springboot.git',
+                    credentialsId: 'github-token'  // Make sure this matches the ID you set
             }
         }
 
@@ -16,7 +18,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploying application...'
+                echo 'Deploying...'
             }
         }
     }
