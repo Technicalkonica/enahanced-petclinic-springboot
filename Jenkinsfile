@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        maven 'maven'
+    }
 
     stages {
         stage('Checkout from git') {
@@ -10,9 +13,10 @@ pipeline {
             }
         }
 
-        stage('Test1') {
+        stage('Maven Compile') {
             steps {
-                echo 'Running tests...'
+                echo 'This is Maven Compile Stage'
+                sh "mvn compile"
             }
         }
 
