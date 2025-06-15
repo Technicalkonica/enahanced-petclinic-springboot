@@ -40,9 +40,9 @@ pipeline {
                 SCANNER_HOME = tool 'Sonar-scanner'  // Ensure 'Sonar-scanner' tool is properly configured in Jenkins
             }
             steps {
-                withSonarQubeEnv('sonar') {  // Ensure 'sonarserver' is configured in Jenkins
+                withSonarQubeEnv('sonarserver') {  // Ensure 'sonarserver' is configured in Jenkins
                     sh '''
-                    $SCANNER_HOME/bin/sonar-scanner \
+                    $SCANNER_HOME/bin/Sonar-scanner \
                     -Dsonar.organization=technicalkonica \
                     -Dsonar.projectName=Springbootpet \
                     -Dsonar.projectKey=technicalkonica_springbootpet \
