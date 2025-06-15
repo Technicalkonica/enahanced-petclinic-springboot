@@ -10,16 +10,18 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('Maven Compile') {
             steps {
-                echo 'Running tests...'
+                echo 'This is maven compile stage'
+                sh"mvn compile"
             }
         }
-
-        stage('Deploy') {
+        stage('Maven Test') {
             steps {
-                echo 'Deploying...'
+                echo 'This is maven test stage'
+                sh"mvn test"
             }
+       
         }
     }
 }
