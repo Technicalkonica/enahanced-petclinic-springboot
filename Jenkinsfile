@@ -19,10 +19,11 @@ pipeline {
                 sh "mvn compile"
             }
         }
-
-        stage('Deploy1') {
+        stage('Maven Test') {
             steps {
-                echo 'Deploying...'
+                echo 'This is Maven Test Stage'
+                sh "mvn tst"
+      
             }
         }
     }
